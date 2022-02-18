@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { Autocomplete } from "@react-google-maps/api";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlusSquare, faStar} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -71,16 +70,6 @@ const AddRestaurant = ({ callbackAddRestaurant }) => {
             />
             <br />
             <label><strong>Address:</strong></label>
-            <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
-              <input
-                className={style.add_restaurant_input}
-                onChange={(event) => {
-                  setAddress(event.target.value);
-                }}
-                type="text"
-                placeholder="Enter address ..."
-              />
-            </Autocomplete>
           </div>
         </Modal.Body>
         <Modal.Footer>

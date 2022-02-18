@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Map from "../components/GoogleMap";
+import Map from "./Map";
 import ListRestaurants from "../components/ListRestaurants";
 import style from "../assets/styles/map_section.module.css";
 import { ErrorBoundary } from "react-error-boundary";
