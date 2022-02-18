@@ -1,0 +1,38 @@
+.map_section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list_restaurants {
+  width: 40%;
+}
+
+.container_options {
+  background-color: rgba(218, 218, 218, 0.658);
+  padding: 8.5px;
+  position: relative;
+  z-index: 1000;
+  -webkit-box-shadow: 12px 8px 14px 5px rgba(0,0,0,0.58);
+  box-shadow: 12px 8px 14px 5px rgba(0,0,0,0.58);
+}
+
+/********** Medium devices only **********/
+@media (min-width: 768px) and (max-width: 991px) {
+  .list_restaurants {
+    width: 100%;
+  }
+  .container_options {
+    margin-top: 110px;
+    }
+}
+
+/********** Mobile devices only **********/
+@media only screen and (max-width: 767px) {
+  .list_restaurants {
+    width: 100%;
+  }
+  .container_options {
+  margin-top: 110px;
+  }
+  
+}

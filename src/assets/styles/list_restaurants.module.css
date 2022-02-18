@@ -1,0 +1,55 @@
+.container_restaurants {
+  display: flex;
+  background-color: rgba(53, 53, 61, 0.137);
+  flex-direction: column;
+  height: 90vh;
+  overflow-y: auto;
+  padding-bottom: 20%;
+}
+
+.list_restaurants_items {
+  display: flex;
+  flex-direction: column;
+  margin: 0.5em;
+}
+
+.list_restaurants_item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5em;
+  margin: 0.5em;
+  background-color: rgb(255, 255, 255);
+  border-radius: 20px;
+}
+
+.restaurant_infos {
+  display: flex;
+  flex-direction: column;
+}
+
+.restaurant_rating {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/********** Large devices only **********/
+@media (min-width: 992px) {
+  .container_restaurants {
+    width: 100%;
+  }
+}
+
+/********** Medium devices only **********/
+@media (min-width: 768px) and (max-width: 991px) {
+  .container_restaurants {
+    width: 100%;
+  }
+}
+
+/********** Mobile devices only **********/
+@media only screen and (max-width: 767px) {
+  .container_restaurants {
+    width: 100%;
+  }
+}

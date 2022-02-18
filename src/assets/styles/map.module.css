@@ -1,0 +1,126 @@
+.logo {
+  float: left;
+}
+
+.logo img {
+  width: 60px;
+}
+
+.custom-map-control-button {
+  background-color: #fff;
+  border: 0;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
+  margin: 10px;
+  padding: 0 0.5em;
+  font: 400 18px Roboto, Arial, sans-serif;
+  overflow: hidden;
+  height: 40px;
+  cursor: pointer;
+}
+
+.custom-map-control-button:hover {
+  background: #ebebeb;
+}
+
+.searchMsgError {
+  background-color: rgba(62, 136, 233, 0.863);
+  z-index: 100000;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 240px;
+  display: none;
+  padding: 12px;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  text-overflow: ellipsis;
+  outline: none;
+  position: absolute;
+  left: 1em;
+  top: 12em;
+}
+
+.inputSearch {
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  width: 240px;
+  padding: 12px;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  outline: none;
+  text-overflow: ellipses;
+  position: absolute;
+  left: 1em;
+  top: 0.6em;
+}
+
+.nextRestaurantsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(139, 139, 139, 0.253);
+  padding: 23px;
+}
+
+.nextBntContainer {
+  display: flex;
+  align-items: center;
+}
+
+.nextRestaurantsBtn {
+  padding: 1em;
+  float: right;
+  border-radius: 10px;
+  margin-left: 12px;
+  background-color: rgba(139, 51, 240, 0.527);
+	border: none;
+}
+
+.nextRestaurantsBtn:hover {
+  color: rgba(0, 0, 0, 0.76);
+  background-color: rgba(139, 51, 240, 0.404);
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .map {
+    width: 100%;
+    height: 60vh;
+  }
+}
+
+/********** Large devices only **********/
+@media (min-width: 992px) {
+  .map {
+    width: 60%;
+    height: 85vh;
+   }
+}
+
+/********** Medium devices only **********/
+@media (min-width: 768px) and (max-width: 991px) {
+  .map {
+    width: 100%;
+    height: 50vh;
+  }
+}
+
+/********** Mobile devices only **********/
+@media only screen and (max-width: 767px) {
+  .map {
+    width: 100%;
+    height: 60vh;
+  }
+
+  .searchMsgError {
+    left: 0.8em;
+    top: 13em;
+  }
+
+  .inputSearch {
+    left: 0.8em;
+    top: 4em;
+  }
+}

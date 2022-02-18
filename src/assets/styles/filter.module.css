@@ -1,0 +1,31 @@
+.filter_container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.filter_container label {
+  margin-right: 20px;
+  font-weight: bold;
+}
+
+.filter_container form {
+  border-radius: 10px;
+  padding: 8px;
+  background-color: rgba(139, 51, 240, 0.842);
+}
+
+.filter_container form span {
+  border-radius: 10px;
+  padding: 8px;
+  color: white;
+}
+
+/********** Mobile devices only **********/
+@media only screen and (max-width: 767px) {
+    .filter_container {
+      flex-direction: column;
+    }
+}
+  
