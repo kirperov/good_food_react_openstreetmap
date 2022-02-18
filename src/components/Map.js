@@ -1,4 +1,5 @@
 import React from "react";
+import restaurantsData from "../assets/restaurantsData.json";
 import { useState, useEffect } from "react";
 import style from "../assets/styles/map.module.css";
 import marker from "../assets/images/cutlery.png";
@@ -12,15 +13,17 @@ import { faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
  
 library.add(faArrowRight);
+
 const iconPerson = new L.Icon({
   iconUrl:myPosition,
   iconSize: new L.Point(40, 40),
   className: 'leaflet-div-icon'
 });
-const containerStyle = {
-  height: "100%",
-};
-
+const iconRestaurants = new L.Icon({
+  iconUrl:marker,
+  iconSize: new L.Point(40, 40),
+  className: 'leaflet-div-icon'
+});
 
 const Map = (props) => {
   const [map, setMap] = useState(null);
@@ -183,6 +186,13 @@ const Map = (props) => {
           style={{ height: "100vh" }}
           whenCreated={setMap}
         >
+          {restaurantsData.features.map(restaurant => (
+          <Marker 
+              icon={iconRestaurants}   
+              key={restaurant.properties.osm_id}
+              position={{lat: restaurant.geometry.coordinates[1], lng: restaurant.geometry.coordinates[0]}}>
+          </Marker>
+          ))}
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
