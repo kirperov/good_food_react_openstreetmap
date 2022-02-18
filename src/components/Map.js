@@ -8,10 +8,6 @@ import 'leaflet/dist/leaflet.css';
 import myPosition from "../assets/images/location.png";
 import logo from "../assets/images/logo.png";
 import L from 'leaflet';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowRight} from '@fortawesome/free-solid-svg-icons'
- 
-library.add(faArrowRight);
 
 const iconPerson = new L.Icon({
   iconUrl:myPosition,
