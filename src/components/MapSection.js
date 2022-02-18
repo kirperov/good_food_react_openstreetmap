@@ -28,13 +28,13 @@ const MapSection = () => {
     let sortedRestaurantsData = [];
       for (let i = 0; i < restaurantApiData.length; i++) {
         sortedRestaurantsData.push({
-          place_id: restaurantApiData[i].place_id,
-          name: restaurantApiData[i].name,
-          vicinity: restaurantApiData[i].vicinity,
-          geometry: { lat: restaurantApiData[i].geometry.lat, lng: restaurantApiData[i].geometry.lng },
-          rating: restaurantApiData[i].rating,
-          user_ratings_total: restaurantApiData[i].user_ratings_total,
-          reviews: restaurantApiData[i].reviews
+          place_id: restaurantApiData[i].properties.osm_id,
+          name: restaurantApiData[i].properties.name,
+          vicinity: restaurantApiData[i].properties.com_nom,
+          geometry: { lat: restaurantApiData[i].geometry.coordinates[0], lng: restaurantApiData[i].geometry.coordinates[1] },
+          rating: 0,
+          user_ratings_total: 0,
+          reviews: []
         });
       }
       setRestaurantsList(sortedRestaurantsData);
@@ -84,9 +84,7 @@ const MapSection = () => {
           />
           <div className={style.list_restaurants}>
             <div className={style.container_options}>
-              <Filter callbackFilter={callbackMaxFilter} />
               <AddRestaurant callbackAddRestaurant={callbackAddRestaurant} />
-              <OfflineButton callbackOffline={callbackOffline}></OfflineButton>
             </div>
             <ListRestaurants
               listRestaurants={restaurantsList}

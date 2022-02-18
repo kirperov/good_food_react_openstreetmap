@@ -10,7 +10,6 @@ import logo from "../assets/images/logo.png";
 import L from 'leaflet';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faArrowRight} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
  
 library.add(faArrowRight);
 
@@ -27,20 +26,18 @@ const iconRestaurants = new L.Icon({
 
 const Map = (props) => {
   const [map, setMap] = useState(null);
-  const [autocomplete, setAutocomplete] = useState(null);
-  const [countNextLimit, setCountNextLimit] = useState({count: 0});
+  let bounds;
+  if(map) {
+    bounds = map.getBounds();
+  }
   // Default geolocation Marseille, France
   const [geolocation, setGeolocation] = useState({ lat: 43.2965, lng: 5.3698 });
-  const [service, setService] = useState();
   const [restaurantsDataApiResults, setRestaurantsDataApiResults] = useState({
     data: [],
   });
 
   const setData = () => {
-    if(props.offlineData) {
-      // setRestaurantsDataApiResults({data: restaurants})
-    } else {
-    }
+    setRestaurantsDataApiResults({data: restaurantsData.features})
   }
 
   window.onload = () => {
@@ -65,15 +62,16 @@ const Map = (props) => {
     )
   }
 
-  useEffect(() => {
-    setData();
-   }, [props.offlineData]);
+  function CheckBoundsMap() {
+  const map = useMapEvents({
+      move: () => {
+        bounds = map.getBounds();
+        checkBounds();
+      }
+    })
+    return null
+  }
 
-  const onLoad = (autocompleted) => {
-    setAutocomplete(autocompleted);
-    setData();
-  };
-  
   useEffect(() => {
     if(props.newRestaurant !== null) {
       if(Object.keys(props.newRestaurant).length > 0) {
@@ -83,95 +81,25 @@ const Map = (props) => {
    }, [props.newRestaurant]);
 
   useEffect(() => {
-    let filteredMinMax = showMinMaxRestaurantsResults(restaurantsDataApiResults.data);
-    props.mapApiCallback(filteredMinMax);
-
-   }, [props.minFilterStar, props.maxFilterStar]);
-
-  const onPlaceChanged = () => {
-    try {
-      setGeolocation({
-        lat: autocomplete.getPlace().geometry.location.lat(),
-        lng: autocomplete.getPlace().geometry.location.lng(),
-      });
-      hideMsgAddressError();
-    } catch (error) {
-      showMsgAddressError();
-    }
-  };
+    props.mapApiCallback(restaurantsDataApiResults.data)
+  }, [props.minFilterStar, props.maxFilterStar]);
 
   useEffect(() => {
     setData()
   }, [geolocation]);
 
-  useEffect(() => {
-    let filteredMinMax = showMinMaxRestaurantsResults(restaurantsDataApiResults.data);
-    props.mapApiCallback(filteredMinMax);
-  }, [restaurantsDataApiResults]);
-
-  const showMinMaxRestaurantsResults = (filteredRestorantsMap) => {
-    let filteredRestaurants = [];
-    filteredRestorantsMap.forEach(element => {
-      if(element.rating >= props.minFilterStar && element.rating <= props.maxFilterStar) {
-        filteredRestaurants.push(element);
-      }
-    });
-    return filteredRestaurants;
-  };
-
-  const initData = () => {
-      for (let n = 0; n < restaurantsDataApiResults.data.length; n++) {
-          for(let j = 0; j < props.newListRestaurants.length; j++) {
-            if(props.newListRestaurants[j].place_id === restaurantsDataApiResults.data[n].place_id) {
-              restaurantsDataApiResults.data[n].user_ratings_total = props.newListRestaurants[j].user_ratings_total;
-              restaurantsDataApiResults.data[n].reviews = props.newListRestaurants[j].reviews
-              restaurantsDataApiResults.data[n].rating = props.newListRestaurants[j].rating
-            }
-          }
-      }
-      return restaurantsDataApiResults;
-  }
-
-  // const checkBounds = () => {
-  //   initData();
-  //   if (bounds) {
-  //     let sortedListRestaurants;
-  //     if(props.offlineData) {
-  //       sortedListRestaurants = restaurantsDataApiResults.data.filter(
-  //         (restaurant) =>
-  //           bounds.contains({
-  //             lat: restaurant.geometry.lat,
-  //             lng: restaurant.geometry.lng,
-  //           })
-  //       );
-  //     } else {
-  //       sortedListRestaurants = restaurantsDataApiResults.data.filter(
-  //         (restaurant) =>
-  //           bounds.contains({
-  //             lat: (restaurant.geometry.location!==undefined) ? restaurant.geometry.location.lat() : restaurant.geometry.lat,
-  //             lng: (restaurant.geometry.location!==undefined) ? restaurant.geometry.location.lng() : restaurant.geometry.lng,
-  //           })
-  //       );
-  //     }
-  //     let filteredRestaurantsWithMinMax = showMinMaxRestaurantsResults(sortedListRestaurants);
-  //     props.mapApiCallback(filteredRestaurantsWithMinMax)
-  //   }
-  // };
-
-  const showMsgAddressError = () => {
-    document.getElementById("search-msg-error").style.display = "block";
-  };
-
-  const hideMsgAddressError = () => {
-    document.getElementById("search-msg-error").style.display = "none";
-  };
-
-  const options = {
-    zoomControl: false,
-    mapTypeControl: false,
-    streetViewControl: false,
-    imagePath:
-      "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m", // so you must have m1.png, m2.png, m3.png, m4.png, m5.png and m6.png in that folder
+  const checkBounds = () => {
+    if (bounds) {
+       let sortedListRestaurants;
+       sortedListRestaurants = restaurantsDataApiResults.data.filter(
+         (restaurant) =>
+           bounds.contains({
+             lat: restaurant.geometry.coordinates[1],
+             lng: restaurant.geometry.coordinates[0],
+           })
+       )
+      props.mapApiCallback(sortedListRestaurants)
+    }
   };
 
   return (
@@ -183,7 +111,7 @@ const Map = (props) => {
         </div>
         <MapContainer
           center={geolocation} zoom={15}
-          style={{ height: "100vh" }}
+          style={{ height: "100%" }}
           whenCreated={setMap}
         >
           {restaurantsData.features.map(restaurant => (
@@ -198,6 +126,7 @@ const Map = (props) => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <LocationMarker />
+          <CheckBoundsMap />
         </MapContainer>
       </div>
   );
