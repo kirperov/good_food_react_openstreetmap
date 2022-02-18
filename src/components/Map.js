@@ -12,6 +12,11 @@ import { faArrowRight} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
  
 library.add(faArrowRight);
+const iconPerson = new L.Icon({
+  iconUrl:myPosition,
+  iconSize: new L.Point(40, 40),
+  className: 'leaflet-div-icon'
+});
 const containerStyle = {
   height: "100%",
 };
@@ -36,16 +41,26 @@ const Map = (props) => {
   }
 
   window.onload = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setGeolocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        });
-      });
-    }
     setData();
   };
+
+  function LocationMarker() {
+    const map = useMapEvents({
+      click: () => {
+        map.locate()
+      },
+      locationfound(e) {
+        setGeolocation(e.latlng)
+        map.flyTo(e.latlng, map.getZoom())
+      }
+    })
+  
+    return geolocation === null ? null : (
+      <Marker position={geolocation} icon={iconPerson}>
+        <Popup>You are here</Popup>
+      </Marker>
+    )
+  }
 
   useEffect(() => {
     setData();
@@ -172,6 +187,7 @@ const Map = (props) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          <LocationMarker />
         </MapContainer>
       </div>
   );
